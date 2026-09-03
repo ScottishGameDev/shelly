@@ -80,11 +80,6 @@ if [[ "${1:-}" == "restore" ]]; then
     fi
     idx=$((idx % ${#FILES[@]}))
     target="${FILES[$idx]}"
-    # wait for hyprpaper socket to be ready (up to 4 s)
-    for _ in $(seq 1 20); do
-        hyprctl hyprpaper listloaded &>/dev/null && break
-        sleep 0.2
-    done
     apply_wallpaper "$target"
     exit 0
 fi

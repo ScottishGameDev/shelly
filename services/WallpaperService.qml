@@ -65,12 +65,7 @@ QtObject {
 
     property Connections configConnections: Connections {
         target: Config
-        function onWallpaperChanged() { applyTimer.restart() }
-    }
-
-    property Timer applyTimer: Timer {
-        interval: 100
-        onTriggered: root.apply()
+        function onWallpaperChanged() { root.apply() }
     }
 
     property Process freezeWriter: Process {
