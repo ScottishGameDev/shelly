@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "apps": {
+    "volume": ["pwvucontrol"],
+    "spotify": ["spotify-launcher"]
+  },
+  "weather": {
+    "location": "London"
+  },
+  "wallpaper": {
+    "mode": "images",
+    "directory": "~/Pictures/walls",
+    "color": "#26312F",
+    "colors": ["#26312F", "#EEF1ED", "#B8D5CC", "#DCC7A1", "#B98282"]
+  },
+  "controller": {
+    "enabled": false,
+    "address": ""
+  },
+  "workspace2": {
+    "enabled": false,
+    "id": 2,
+    "monitor": "",
+    "launchDelayMs": 1000,
+    "apps": [
+      ["kitty", "-o", "confirm_os_window_close=0"],
+      ["firefox"]
+    ],
+    "postLaunchDelayMs": 2000,
+    "postLaunch": []
+  },
+  "minimisedStateFile": ""
+}

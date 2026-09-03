@@ -150,6 +150,50 @@ PanelWindow {
         }
     }
 
+    component WallpaperSwatch: Rectangle {
+        id: wallpaperSwatch
+        required property string colorValue
+        readonly property bool selected: !WallpaperService.imageMode
+            && Config.wallpaperColor === colorValue.toUpperCase()
+        signal chosen()
+
+        activeFocusOnTab: true
+        Accessible.role: Accessible.Button
+        Accessible.name: "Use solid wallpaper " + colorValue
+        implicitWidth: 30
+        implicitHeight: 30
+        radius: Theme.controlRadius
+        color: colorValue
+        border.color: activeFocus || selected ? Theme.controlFocus : Theme.controlBorder
+        border.width: activeFocus || selected ? 3 : 1
+
+        HoverHandler { id: swatchHover }
+        TapHandler {
+            onTapped: {
+                wallpaperSwatch.forceActiveFocus()
+                wallpaperSwatch.chosen()
+            }
+        }
+        Keys.onPressed: function(event) {
+            if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter
+                    || event.key === Qt.Key_Space) {
+                wallpaperSwatch.chosen()
+                event.accepted = true
+            }
+        }
+
+        Text {
+            anchors.centerIn: parent
+            visible: wallpaperSwatch.selected
+            text: "✓"
+            color: ThemeOverrideService.contrastRatio("#ffffff", wallpaperSwatch.color) >= 3
+                ? "#ffffff" : "#000000"
+            font.family: Theme.fontFamily
+            font.pixelSize: Theme.sizeLabel
+            font.weight: Font.Bold
+        }
+    }
+
     PopupSurface {
         id: panel
         anchors.fill: parent
@@ -236,6 +280,7 @@ PanelWindow {
                     tooltip: "Previous wallpaper"
                     bracketed: false
                     showCorners: false
+                    enabled: WallpaperService.imageMode
                     onClicked: WallpaperService.previous()
                 }
                 Chip {
@@ -244,13 +289,50 @@ PanelWindow {
                     tooltip: "Next wallpaper"
                     bracketed: false
                     showCorners: false
+                    enabled: WallpaperService.imageMode
                     onClicked: WallpaperService.next()
                 }
                 Item { Layout.fillWidth: true }
                 ToggleSwitch {
-                    text: "AUTO-CYCLE"
+                    text: WallpaperService.imageMode ? "AUTO-CYCLE" : "SOLID " + Config.wallpaperColor
                     checked: WallpaperService.autoCycle
+                    available: WallpaperService.imageMode
                     onToggled: function(checked) { WallpaperService.setAutoCycle(checked) }
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 6
+
+                Chip {
+                    text: "IMAGES"
+                    accessibleName: "Use image wallpapers"
+                    bracketed: false
+                    showCorners: false
+                    fontSize: Theme.sizeMarker
+                    active: WallpaperService.imageMode
+                    onClicked: Config.selectWallpaperImages()
+                }
+                Repeater {
+                    model: Config.wallpaperColors
+                    delegate: WallpaperSwatch {
+                        required property string modelData
+                        colorValue: modelData
+                        onChosen: Config.selectWallpaperColor(colorValue)
+                    }
+                }
+                Item { Layout.fillWidth: true }
+                Chip {
+                    text: "THEME BG"
+                    accessibleName: "Use the current theme background as a solid wallpaper"
+                    tooltip: "Use theme background"
+                    bracketed: false
+                    showCorners: false
+                    fontSize: Theme.sizeMarker
+                    bg: Theme.bg
+                    fg: Theme.text
+                    onClicked: Config.selectWallpaperColor(Theme.bg)
                 }
             }
 

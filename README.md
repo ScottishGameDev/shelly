@@ -38,7 +38,13 @@ Quickshell resolves bundled scripts from its active shell root, so the QML files
 
 ## Configuration
 
-Edit [config.json](config.json). Commands are JSON argument arrays, which avoids shell quoting and allows applications to be replaced directly.
+Copy the tracked example to the ignored private config, then edit it:
+
+```bash
+cp config.example.json config.json
+```
+
+[config.example.json](config.example.json) is safe to share. `config.json` is the local runtime configuration and is ignored by Git, so it can contain personal locations, hardware addresses, and application choices. Commands are JSON argument arrays, which avoids shell quoting and allows applications to be replaced directly.
 
 ```json
 {
@@ -51,7 +57,10 @@ Edit [config.json](config.json). Commands are JSON argument arrays, which avoids
     "location": "London"
   },
   "wallpaper": {
-    "directory": "~/Pictures/walls"
+    "mode": "images",
+    "directory": "~/Pictures/walls",
+    "color": "#26312F",
+    "colors": ["#26312F", "#EEF1ED", "#B8D5CC", "#DCC7A1", "#B98282"]
   },
   "controller": {
     "enabled": false,
@@ -60,10 +69,14 @@ Edit [config.json](config.json). Commands are JSON argument arrays, which avoids
   "workspace2": {
     "enabled": false,
     "id": 2,
+    "monitor": "",
+    "launchDelayMs": 1000,
     "apps": [
       ["kitty", "-e", "btop"],
       ["firefox"]
-    ]
+    ],
+    "postLaunchDelayMs": 2000,
+    "postLaunch": []
   },
   "minimisedStateFile": ""
 }
@@ -75,6 +88,14 @@ Edit [config.json](config.json). Commands are JSON argument arrays, which avoids
 - `apps.spotify` is launched when no Spotify window exists.
 - `workspace2.enabled` controls whether the WS2 button is shown and defaults to `false`.
 - `workspace2.apps` contains commands launched after switching to `workspace2.id`.
+- `workspace2.monitor` optionally focuses a named monitor before switching workspace.
+- `workspace2.launchDelayMs` waits after switching before launching applications.
+- `workspace2.postLaunch` is an optional command run after all applications launch. Relative `scripts/...` paths resolve from the project root, `~` expands to the user's home, and `{workspaceId}` expands to the configured workspace ID.
+- `workspace2.postLaunchDelayMs` controls how long to wait for application windows before running the post-launch command. A project-local `scripts/workspace2_layout.sh` is included as a starting point for window placement.
+
+The WS2 Close action asks Hyprland to close each window on that workspace by its unique window address. It never kills application process IDs, because applications such as Firefox may share one process across windows on multiple workspaces.
+
+Kitty may prompt when a compositor asks it to close. Disable that prompt only for dedicated WS2 terminals by adding `"-o", "confirm_os_window_close=0"` to their command arrays, as shown in `config.example.json`. Existing Kitty windows must be relaunched before the option takes effect.
 
 Each command must be a non-empty array of strings. Executables must be available in `PATH` unless an absolute path is supplied.
 
@@ -84,7 +105,11 @@ Each command must be a non-empty array of strings. Executables must be available
 
 ### Wallpapers
 
-`wallpaper.directory` accepts an absolute path or a path beginning with `~/`. Supported files are JPG, JPEG, and PNG.
+- Set `wallpaper.mode` to `"images"` to use wallpaper rotation. `wallpaper.directory` accepts an absolute path or a path beginning with `~/`; JPG, JPEG, and PNG are supported.
+- Set `wallpaper.mode` to `"solid"` to use `wallpaper.color`, which must be an opaque `#RRGGBB` value. Shelly generates a cached one-pixel PNG, so no image utility is required.
+- `wallpaper.colors` supplies the solid-color swatches shown in the control center.
+
+The control center offers Images, configured color swatches, and Theme BG, which snapshots the active theme background as a solid wallpaper. Previous, next, and Auto-cycle controls are disabled while solid mode is active. Changes are persisted to the private `config.json` and applied live.
 
 To enable automatic cycling:
 
@@ -116,4 +141,4 @@ Theme selection and live-editor overrides are local runtime state and are ignore
 
 ## Publishing
 
-Before publishing a fork, check `config.json` for personal locations, hardware addresses, and application commands. Runtime caches and Python bytecode are already excluded by [.gitignore](.gitignore).
+Publish `config.example.json`, not your private `config.json`. Runtime configuration, theme state, caches, and Python bytecode are excluded by [.gitignore](.gitignore).

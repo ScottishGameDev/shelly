@@ -7,17 +7,42 @@ QtObject {
 
     readonly property string freezePath: Paths.wallpaperFreezePath
     property bool frozen: false
-    readonly property bool autoCycle: !frozen
+    readonly property bool imageMode: Config.wallpaperMode === "images"
+    readonly property bool autoCycle: imageMode && !frozen
+    property string pendingAction: ""
 
     function previous() {
-        previousProcess.running = true
+        if (!imageMode) return
+        run("prev")
     }
 
     function next() {
-        nextProcess.running = true
+        if (!imageMode) return
+        run("next")
+    }
+
+    function apply() {
+        run("restore")
+    }
+
+    function run(action) {
+        pendingAction = action
+        if (!wallpaperProcess.running) startPending()
+    }
+
+    function startPending() {
+        if (!pendingAction) return
+        const action = pendingAction
+        pendingAction = ""
+        wallpaperProcess.command = [
+            "bash", Paths.script("wallpaper_shift.sh"), action,
+            Config.wallpaperDirectory, Config.wallpaperMode, Config.wallpaperColor
+        ]
+        wallpaperProcess.running = true
     }
 
     function setAutoCycle(enabled) {
+        if (!imageMode) return
         const nextFrozen = !enabled
         frozen = nextFrozen
         freezeWriter.command = ["sh", "-c",
@@ -33,12 +58,19 @@ QtObject {
         onTextChanged: root.frozen = text().trim() === "1"
     }
 
-    property Process previousProcess: Process {
-        command: ["bash", Paths.script("wallpaper_shift.sh"), "prev", Config.wallpaperDirectory]
+    property Process wallpaperProcess: Process {
+        running: false
+        onExited: root.startPending()
     }
 
-    property Process nextProcess: Process {
-        command: ["bash", Paths.script("wallpaper_shift.sh"), "next", Config.wallpaperDirectory]
+    property Connections configConnections: Connections {
+        target: Config
+        function onWallpaperChanged() { applyTimer.restart() }
+    }
+
+    property Timer applyTimer: Timer {
+        interval: 100
+        onTriggered: root.apply()
     }
 
     property Process freezeWriter: Process {

@@ -6,6 +6,8 @@ state_dir="${XDG_RUNTIME_DIR:-/tmp}/quickshell"
 state_file="$state_dir/game_mode_state"
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 wallpaper_dir=${2:-}
+wallpaper_mode=${3:-images}
+wallpaper_color=${4:-#26312F}
 mkdir -p "$state_dir"
 
 case "$mode" in
@@ -23,6 +25,7 @@ printf '%s' "$new_state" > "$state_file"
 restore_wallpaper() {
     pgrep -x hyprpaper >/dev/null || setsid hyprpaper >/dev/null 2>&1 &
     setsid bash "$script_dir/wallpaper_shift.sh" restore "$wallpaper_dir" \
+        "$wallpaper_mode" "$wallpaper_color" \
         >/dev/null 2>&1 &
 }
 

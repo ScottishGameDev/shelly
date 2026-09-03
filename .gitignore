@@ -1,4 +1,5 @@
 # Runtime and user state
+/config.json
 /theme_selection
 /theme_overrides.json
 

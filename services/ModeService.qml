@@ -29,14 +29,17 @@ QtObject {
     }
 
     property Process modeOff: Process {
-        command: ["bash", Paths.script("toggle_mode.sh"), "off", Config.wallpaperDirectory]
+        command: ["bash", Paths.script("toggle_mode.sh"), "off",
+              Config.wallpaperDirectory, Config.wallpaperMode, Config.wallpaperColor]
     }
 
     property Process modeNotifications: Process {
-        command: ["bash", Paths.script("toggle_mode.sh"), "ntfc", Config.wallpaperDirectory]
+        command: ["bash", Paths.script("toggle_mode.sh"), "ntfc",
+              Config.wallpaperDirectory, Config.wallpaperMode, Config.wallpaperColor]
     }
 
     property Process modeGame: Process {
-        command: ["bash", Paths.script("toggle_mode.sh"), "on", Config.wallpaperDirectory]
+        command: ["bash", Paths.script("toggle_mode.sh"), "on",
+              Config.wallpaperDirectory, Config.wallpaperMode, Config.wallpaperColor]
     }
 }
