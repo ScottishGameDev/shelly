@@ -1,0 +1,10 @@
+[Unit]
+Description=Cycle the Quickshell wallpaper
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=30s
+Unit=wallpaper-cycle.service
+
+[Install]
+WantedBy=timers.target

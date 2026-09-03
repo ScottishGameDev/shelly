@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "apps": {
+    "volume": ["pwvucontrol"],
+    "spotify": ["spotify-launcher"]
+  },
+  "weather": {
+    "location": "London"
+  },
+  "wallpaper": {
+    "directory": "~/Pictures/walls"
+  },
+  "controller": {
+    "enabled": true,
+    "address": ""
+  },
+  "workspace2": {
+    "enabled": false,
+    "id": 2,
+    "apps": []
+  },
+  "minimisedStateFile": ""
+}

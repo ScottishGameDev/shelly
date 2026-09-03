@@ -1,0 +1,12 @@
+module components
+LabelCode 1.0 LabelCode.qml
+Readout 1.0 Readout.qml
+Chip 1.0 Chip.qml
+ColorPicker 1.0 ColorPicker.qml
+ColorTokenEditor 1.0 ColorTokenEditor.qml
+ThemeShapeEditor 1.0 ThemeShapeEditor.qml
+CornerBracket 1.0 CornerBracket.qml
+DashFrame 1.0 DashFrame.qml
+ToggleSwitch 1.0 ToggleSwitch.qml
+PopupSurface 1.0 PopupSurface.qml
+SectionHeader 1.0 SectionHeader.qml

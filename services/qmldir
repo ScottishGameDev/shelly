@@ -1,0 +1,6 @@
+module services
+singleton Paths 1.0 Paths.qml
+singleton Config 1.0 Config.qml
+singleton ModeService 1.0 ModeService.qml
+singleton ThemeOverrideService 1.0 ThemeOverrideService.qml
+singleton WallpaperService 1.0 WallpaperService.qml

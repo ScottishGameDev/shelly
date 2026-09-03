@@ -1,0 +1,9 @@
+module popups
+ControlCenter 1.0 ControlCenter.qml
+MusicMenu 1.0 MusicMenu.qml
+PowerMenu 1.0 PowerMenu.qml
+VolumeOSD 1.0 VolumeOSD.qml
+WS2Menu 1.0 WS2Menu.qml
+TrayMenu 1.0 TrayMenu.qml
+ThemeEditor 1.0 ThemeEditor.qml
+ColorPickerPopup 1.0 ColorPickerPopup.qml

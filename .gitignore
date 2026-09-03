@@ -1,0 +1,13 @@
+# Runtime and user state
+/theme_selection
+/theme_overrides.json
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Logs and temporary files
+*.log
+*.qslog
+*.tmp
+.*.tmp

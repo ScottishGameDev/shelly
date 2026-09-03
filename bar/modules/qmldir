@@ -1,0 +1,10 @@
+module bar.modules
+Workspaces 1.0 Workspaces.qml
+Clock 1.0 Clock.qml
+Weather 1.0 Weather.qml
+Music 1.0 Music.qml
+Tray 1.0 Tray.qml
+Minimised 1.0 Minimised.qml
+Power 1.0 Power.qml
+NetGraph 1.0 NetGraph.qml
+RecordPip 1.0 RecordPip.qml

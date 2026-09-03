@@ -1,0 +1,7 @@
+module theme
+singleton Astro 1.0 Astro.qml
+singleton Theme 1.0 Theme.qml
+singleton Bus 1.0 Bus.qml
+singleton Fx 1.0 Fx.qml
+Cyberpunk 1.0 Cyberpunk.qml
+Industrial 1.0 Industrial.qml

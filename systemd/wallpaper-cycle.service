@@ -1,0 +1,6 @@
+[Unit]
+Description=Advance the Quickshell wallpaper
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash %h/.config/quickshell/scripts/wallpaper_shift.sh tick
