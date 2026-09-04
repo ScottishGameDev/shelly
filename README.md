@@ -1,4 +1,8 @@
-# Quickshell Desktop Bar
+# A backup of my Quickshell Desktop Bar
+
+<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/5c7f868d-60e1-4c69-ba18-0845d11910ce" />
+
+
 
 A Hyprland/Quickshell top bar with Cyberpunk and Industrial themes, a control center, live theme editing, media controls, weather, workspaces, wallpaper cycling, and system tray integration.
 
