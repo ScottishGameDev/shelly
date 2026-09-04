@@ -28,7 +28,15 @@ STATEFILE="$CACHE_DIR/wallpaper_index"
 FREEZEFILE="$CACHE_DIR/wallpaper_freeze"
 mkdir -p "$CACHE_DIR"
 exec 9>"$CACHE_DIR/wallpaper.lock"
-flock 9
+
+if [[ "${1:-}" == "tick" || "${WALLPAPER_FROM_TIMER:-0}" == "1" ]]; then
+    # An automatic tick is disposable. Never queue it behind a manual action.
+    flock -n 9 || exit 0
+else
+    # Cancel an in-flight timer service before choosing the manual target.
+    systemctl --user stop wallpaper-cycle.service 2>/dev/null || true
+    flock 9
+fi
 
 apply_wallpaper() {
     local target=$1

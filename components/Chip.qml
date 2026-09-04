@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
+import QtQuick.Controls as Controls
 import "../theme"
 
 // Interactive terminal-style chip with hard-step hover invert.
@@ -74,17 +75,21 @@ Rectangle {
     }
 
     Rectangle {
+        id: tooltipItem
+        parent: Controls.Overlay.overlay
         visible: root.tooltip.length > 0 && hover.hovered
-        anchors.top: parent.bottom
-        anchors.topMargin: 6
-        anchors.horizontalCenter: parent.horizontalCenter
+        enabled: false
         width: tooltipText.implicitWidth + 12
         height: tooltipText.implicitHeight + 8
+        z: 10000
         color: Theme.bgElev
         border.color: Theme.chrome
         border.width: 1
         radius: Theme.controlRadius
-        z: 20
+        readonly property point cursorPosition: root.mapToItem(
+            tooltipItem.parent, hover.point.position.x, hover.point.position.y)
+        x: Math.min(cursorPosition.x + 16, parent.width - width - 4)
+        y: Math.min(cursorPosition.y + 18, parent.height - height - 4)
 
         Text {
             id: tooltipText

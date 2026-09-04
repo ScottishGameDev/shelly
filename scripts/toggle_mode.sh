@@ -23,7 +23,19 @@ esac
 printf '%s' "$new_state" > "$state_file"
 
 restore_wallpaper() {
-    pgrep -x hyprpaper >/dev/null || setsid hyprpaper >/dev/null 2>&1 &
+    local runtime_dir="${XDG_RUNTIME_DIR:-/tmp}/quickshell"
+    local hyprpaper_count
+    mkdir -p "$runtime_dir"
+
+    exec 8>"$runtime_dir/hyprpaper.lock"
+    flock 8
+    hyprpaper_count=$(pgrep -xc hyprpaper || true)
+    if [[ "$hyprpaper_count" != "1" ]]; then
+        pkill -x hyprpaper 2>/dev/null || true
+        setsid hyprpaper >/dev/null 2>&1 &
+    fi
+    flock -u 8
+
     setsid bash "$script_dir/wallpaper_shift.sh" restore "$wallpaper_dir" \
         "$wallpaper_mode" "$wallpaper_color" \
         >/dev/null 2>&1 &
